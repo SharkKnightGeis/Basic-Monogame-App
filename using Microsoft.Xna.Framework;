@@ -1,0 +1,54 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
+public class KeyboardController : IController
+{
+    // Define an event or delegate to communicate with the main game class
+    public event Action<int> OnSpriteChangeRequested;
+    public event Action OnQuitRequested;
+
+    private KeyboardState previousState;
+
+    public KeyboardController()
+    {
+        previousState = Keyboard.GetState();
+    }
+
+    public void Update(GameTime gameTime)
+    {
+        var currentState = Keyboard.GetState();
+
+        // Quit the game if '0' is pressed
+        if (currentState.IsKeyDown(Keys.D0) && !previousState.IsKeyDown(Keys.D0))
+        {
+            OnQuitRequested?.Invoke();
+        }
+
+        // Switch to a static sprite if '1' is pressed
+        if (currentState.IsKeyDown(Keys.D1) && !previousState.IsKeyDown(Keys.D1))
+        {
+            OnSpriteChangeRequested?.Invoke(1);
+        }
+
+        // Switch to an animated, static sprite if '2' is pressed
+        if (currentState.IsKeyDown(Keys.D2) && !previousState.IsKeyDown(Keys.D2))
+        {
+            OnSpriteChangeRequested?.Invoke(2);
+        }
+
+        // Switch to a moving, non-animated sprite if '3' is pressed
+        if (currentState.IsKeyDown(Keys.D3) && !previousState.IsKeyDown(Keys.D3))
+        {
+            OnSpriteChangeRequested?.Invoke(3);
+        }
+
+        // Switch to a moving, animated sprite if '4' is pressed
+        if (currentState.IsKeyDown(Keys.D4) && !previousState.IsKeyDown(Keys.D4))
+        {
+            OnSpriteChangeRequested?.Invoke(4);
+        }
+
+        // Update the previous state
+        previousState = currentState;
+    }
+}
